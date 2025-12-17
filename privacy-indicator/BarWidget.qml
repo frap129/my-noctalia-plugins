@@ -41,7 +41,7 @@ Rectangle {
   readonly property color camColor: camActive ? activeColor : inactiveColor
   readonly property color scrColor: scrActive ? activeColor : inactiveColor
 
-  readonly property bool hasVisibleIcons: !hideInactive || micActive || camActive || scrActive
+  readonly property bool isVisible: !hideInactive || micActive || camActive || scrActive
 
   property real margins: removeMargins ? 0 : Style.marginM * 2
   implicitWidth: isVertical ? Style.capsuleHeight : Math.round(layout.implicitWidth + margins)
@@ -50,8 +50,8 @@ Rectangle {
   Layout.alignment: Qt.AlignVCenter
   radius: Style.radiusM
   color: Style.capsuleColor
-  visible: root.hasVisibleIcons
-  opacity: root.hasVisibleIcons ? 1.0 : 0.0
+  visible: root.isVisible
+  opacity: root.isVisible ? 1.0 : 0.0
 
   PwObjectTracker {
     objects: Pipewire.ready ? Pipewire.nodes.values : []
