@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import qs.Commons
 
 Item {
   id: root
@@ -13,6 +14,7 @@ Item {
   property var launcher: null
   property bool handleSearch: false
   property string supportedLayouts: "list"  // Only list layout for kaomoji
+  property bool supportsAutoPaste: true
 
   // Browsing state
   property string selectedCategory: "all"
