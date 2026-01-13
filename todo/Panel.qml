@@ -281,6 +281,10 @@ Item {
 
                 function cancelEdit() {
                   editing = false;
+                  // Restore the original text when cancelling
+                  if (todoTextEdit) {
+                    todoTextEdit.text = originalText;
+                  }
                 }
 
                 // Watch for editing property changes to handle focus
