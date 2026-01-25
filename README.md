@@ -1,10 +1,11 @@
-# Noctalia Plugins Registry
+# Noctalia Main Plugins Registry
 
 Main plugin registry for [Noctalia Shell](https://github.com/noctalia-dev/noctalia-shell).
 
 ## Overview
 
-This repository hosts community and official plugins for Noctalia Shell. The `registry.json` file is automatically maintained and provides a centralized index of all available plugins.
+This repository hosts community and official plugins for Noctalia Shell.
+The `registry.json` file is automatically maintained and provides a centralized index of all available plugins.
 
 ## Plugin Structure
 
