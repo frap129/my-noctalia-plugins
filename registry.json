@@ -139,7 +139,7 @@
     {
       "id": "hyprland-steam-overlay",
       "name": "Steam Overlay (Hyprland)",
-      "version": "2.0.2",
+      "version": "2.1.1",
       "official": false,
       "author": "blacku",
       "description": "Steam overlay with automatic window management for Hyprland. Automatically moves all Steam windows (except fullscreen games) to overlay workspace as floating windows. Main 3 windows (Friends, Client, Chat) are positioned in a row. Additional windows are brought to top. If new windows don't appear on top, toggle overlay off/on (Super+S twice). Fully responsive with percentage-based layout. Requires Hyprland window manager.",
@@ -147,7 +147,7 @@
       "minNoctaliaVersion": "4.1.2",
       "license": "MIT",
       "tags": [],
-      "lastUpdated": "2026-01-26T23:59:29-05:00"
+      "lastUpdated": "2026-01-29T22:32:10+01:00"
     },
     {
       "id": "kagi-quick-search",
@@ -184,14 +184,14 @@
     {
       "id": "keybind-cheatsheet",
       "name": "Keybind Cheatsheet",
-      "version": "2.1.2",
+      "version": "3.0.0",
       "official": false,
       "author": "blacku",
-      "description": "Universal keyboard shortcuts cheatsheet that automatically detects and displays keybindings for Hyprland or Niri compositors.",
-      "minNoctaliaVersion": "4.1.2",
+      "description": "Universal keyboard shortcuts keymap that automatically detects and displays keybindings for Hyprland or Niri compositors.",
+      "minNoctaliaVersion": "3.6.0",
       "license": "MIT",
       "tags": [],
-      "lastUpdated": "2026-01-26T23:59:29-05:00"
+      "lastUpdated": "2026-01-29T00:09:04+01:00"
     },
     {
       "id": "mangowc-layout-switcher",
@@ -500,6 +500,21 @@
         "System"
       ],
       "lastUpdated": "2026-01-26T23:59:29-05:00"
+    },
+    {
+      "id": "weather-indicator",
+      "name": "Weather Indicator",
+      "version": "1.0.0",
+      "official": false,
+      "author": "Sovereign",
+      "description": "Shows the current weather condition and tempurature.",
+      "repository": "https://github.com/noctalia-dev/noctalia-plugins",
+      "minNoctaliaVersion": "3.6.0",
+      "license": "MIT",
+      "tags": [
+        "Bar"
+      ],
+      "lastUpdated": "2026-01-30T08:41:20-05:00"
     },
     {
       "id": "weekly-calendar",
