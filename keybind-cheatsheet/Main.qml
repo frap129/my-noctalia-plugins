@@ -549,9 +549,16 @@ Item {
     var lines = text.split('\n');
     var categories = [];
     var currentCategory = null;
+    var pendingDescription = null;
 
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i].trim();
+
+      // Enforce strict adjacency: blank lines break comment->bind association
+      if (line === '') {
+        pendingDescription = null;
+        continue;
+      }
 
       // Category header: ### Category Name ###
       var categoryMatch = line.match(/^###\s*(.+?)\s*###$/);
@@ -562,16 +569,19 @@ Item {
         var title = categoryMatch[1].trim();
         logDebug("New category: " + title);
         currentCategory = { "title": title, "binds": [] };
+        pendingDescription = null;
       }
-      // Keybind: bind=MODIFIERS,KEY,COMMAND,PARAMS #"description"
-      else if (line.startsWith("bind=") && line.includes('#"')) {
+      // Comment line (potential description for next bind)
+      else if (line.startsWith("#") && !line.startsWith("###")) {
+        pendingDescription = line.substring(1).trim();
+      }
+      // Keybind: bind=MODIFIERS,KEY,COMMAND,PARAMS
+      else if (line.startsWith("bind=")) {
         if (currentCategory) {
-          var descMatch = line.match(/#"(.*?)"$/);
-          var description = descMatch ? descMatch[1] : "No description";
+          var description = pendingDescription || "No description";
+          pendingDescription = null;
 
-          // Remove the description comment for parsing
-          var bindPart = line.replace(/#".*?"$/, '').trim();
-          var parts = bindPart.split(',');
+          var parts = line.split(',');
           
           if (parts.length >= 2) {
             // First part is bind=MODIFIERS
@@ -598,9 +608,13 @@ Item {
               "keys": fullKey,
               "desc": description
             });
-            logDebug("Added bind: " + fullKey);
+            logDebug("Added bind: " + fullKey + " - " + description);
           }
         }
+      }
+      // Any other line resets the pending description
+      else {
+        pendingDescription = null;
       }
     }
 
