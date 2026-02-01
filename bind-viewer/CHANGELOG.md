@@ -23,8 +23,8 @@
 **IPC Handler Improvements**
 - Added `toggle()` function to IpcHandler for backward compatibility
 - Both IPC call formats now work:
-  - `plugin:keybind-cheatsheet toggle` (legacy format)
-  - `plugin togglePanel keybind-cheatsheet` (built-in Noctalia function)
+  - `plugin:bind-viewer toggle` (legacy format)
+  - `plugin togglePanel bind-viewer` (built-in Noctalia function)
 - Fixed `refresh()` function to properly reset all parser state before re-detecting compositor
 
 ### ✨ New Features
@@ -205,7 +205,7 @@ All success criteria met:
 
 **For Users Upgrading from v2.x:**
 
-1. **No reinstallation required** - Plugin ID remains `keybind-cheatsheet`
+1. **No reinstallation required** - Plugin ID remains `bind-viewer`
 2. **Settings preserved** - All existing settings will be kept
 3. **First launch:** Click "Refresh" button in panel to reload keybinds
 4. **Normal usage:** Click "Refresh" whenever you edit compositor config files
@@ -213,15 +213,15 @@ All success criteria met:
 **IPC Commands (Unchanged):**
 ```bash
 # Toggle panel
-qs -c "noctalia-shell" ipc call plugin togglePanel keybind-cheatsheet
+qs -c "noctalia-shell" ipc call plugin togglePanel bind-viewer
 
 # Refresh keybinds
-qs -c "noctalia-shell" ipc call plugin:keybind-cheatsheet refresh
+qs -c "noctalia-shell" ipc call plugin:bind-viewer refresh
 ```
 
 **Settings Location (Unchanged):**
 ```bash
-~/.local/share/noctalia/plugins/keybind-cheatsheet/
+~/.local/share/noctalia/plugins/bind-viewer/
 ```
 
 **What Changed:**
@@ -271,7 +271,7 @@ Last version with editor functionality and automatic parsing. Suffered from seve
 ## Links
 
 - **Repository:** https://github.com/noctalia-dev/noctalia-plugins
-- **Plugin Path:** `/keybind-cheatsheet` (unchanged)
+- **Plugin Path:** `/bind-viewer` (unchanged)
 - **License:** MIT
 - **Author:** blacku
 - **Minimum Noctalia Version:** 3.6.0

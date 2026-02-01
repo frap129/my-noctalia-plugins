@@ -78,7 +78,7 @@ Item {
   // Header
   NText {
     Layout.fillWidth: true
-    text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.title") || "Keybind Cheatsheet Settings"
+    text: rootItem.pluginApi?.tr("bind-viewer.settings.title") || "Bind Viewer Settings"
     pointSize: Style.fontSizeXXL
     font.weight: Style.fontWeightBold
     color: Color.mOnSurface
@@ -86,7 +86,7 @@ Item {
 
   NText {
     Layout.fillWidth: true
-    text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.description") ||
+    text: rootItem.pluginApi?.tr("bind-viewer.settings.description") ||
       "Configure the appearance and keybind sources for the cheatsheet panel."
     color: Color.mOnSurfaceVariant
     pointSize: Style.fontSizeM
@@ -107,7 +107,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.window-size") || "Window Size"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.window-size") || "Window Size"
         pointSize: Style.fontSizeL
         font.weight: Style.fontWeightBold
         color: Color.mOnSurface
@@ -118,7 +118,7 @@ Item {
         spacing: Style.marginM
 
         NText {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.width") || "Width:"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.width") || "Width:"
           color: Color.mOnSurface
           pointSize: Style.fontSizeM
           Layout.preferredWidth: 120
@@ -141,7 +141,7 @@ Item {
         }
 
         NText {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.width-range") || "px (400-3000)"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.width-range") || "px (400-3000)"
           color: Color.mOnSurfaceVariant
           pointSize: Style.fontSizeS
         }
@@ -152,7 +152,7 @@ Item {
         spacing: Style.marginM
 
         NText {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.height") || "Height:"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.height") || "Height:"
           color: Color.mOnSurface
           pointSize: Style.fontSizeM
           Layout.preferredWidth: 120
@@ -160,7 +160,7 @@ Item {
 
         NToggle {
           id: autoHeightToggle
-          label: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.auto-height") || "Auto"
+          label: rootItem.pluginApi?.tr("bind-viewer.settings.auto-height") || "Auto"
           checked: root.autoHeight
           onToggled: function(checked) {
             root.autoHeight = checked;
@@ -189,7 +189,7 @@ Item {
         }
 
         NText {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.height-range") || "px (300-2000)"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.height-range") || "px (300-2000)"
           color: Color.mOnSurfaceVariant
           pointSize: Style.fontSizeS
           opacity: autoHeightToggle.checked ? 0.5 : 1.0
@@ -198,7 +198,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.auto-height-hint") ||
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.auto-height-hint") ||
           "When 'Auto' is enabled, height adjusts automatically based on content."
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeS
@@ -221,7 +221,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.layout") || "Layout"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.layout") || "Layout"
         pointSize: Style.fontSizeL
         font.weight: Style.fontWeightBold
         color: Color.mOnSurface
@@ -231,7 +231,7 @@ Item {
         spacing: Style.marginM
 
         NText {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.columns") || "Number of columns:"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.columns") || "Number of columns:"
           color: Color.mOnSurface
           pointSize: Style.fontSizeM
         }
@@ -257,7 +257,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.columns-hint") ||
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.columns-hint") ||
           "More columns work better with wider windows."
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeS
@@ -280,7 +280,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.config-paths") || "Configuration Files"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.config-paths") || "Configuration Files"
         pointSize: Style.fontSizeL
         font.weight: Style.fontWeightBold
         color: Color.mOnSurface
@@ -288,7 +288,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.config-paths-description") ||
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.config-paths-description") ||
           "Specify custom paths and variables for your keybinds."
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeS
@@ -307,7 +307,7 @@ Item {
                 color: Color.mOnSurface
             }
             NText {
-                text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.mod-var") || "Mod Key Variable"
+                text: rootItem.pluginApi?.tr("bind-viewer.settings.mod-var") || "Mod Key Variable"
                 color: Color.mOnSurface
                 pointSize: Style.fontSizeM
                 font.weight: Style.fontWeightBold
@@ -330,7 +330,7 @@ Item {
 
         NText {
             Layout.fillWidth: true
-            text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.mod-var-hint") ||
+            text: rootItem.pluginApi?.tr("bind-viewer.settings.mod-var-hint") ||
                 "The variable name used for your Super key (e.g., $mod or $mainMod)."
             color: Color.mOnSurfaceVariant
             pointSize: Style.fontSizeXS
@@ -356,7 +356,7 @@ Item {
             color: Color.mPrimary
           }
           NText {
-            text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.hyprland-path") || "Hyprland Path"
+            text: rootItem.pluginApi?.tr("bind-viewer.settings.hyprland-path") || "Hyprland Path"
             color: Color.mOnSurface
             pointSize: Style.fontSizeM
             font.weight: Style.fontWeightBold
@@ -379,7 +379,7 @@ Item {
 
         NText {
           Layout.fillWidth: true
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.hyprland-format-hint") ||
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.hyprland-format-hint") ||
             "Expected format: bind = $mod, KEY, action #\"description\"\nCategories: # 1. CATEGORY NAME"
           color: Color.mOnSurfaceVariant
           pointSize: Style.fontSizeXS
@@ -405,7 +405,7 @@ Item {
             color: Color.mSecondary
           }
           NText {
-            text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.niri-path") || "Niri Path"
+            text: rootItem.pluginApi?.tr("bind-viewer.settings.niri-path") || "Niri Path"
             color: Color.mOnSurface
             pointSize: Style.fontSizeM
             font.weight: Style.fontWeightBold
@@ -428,7 +428,7 @@ Item {
 
         NText {
           Layout.fillWidth: true
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.niri-format-hint") ||
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.niri-format-hint") ||
             "The plugin will find and parse the 'binds { }' block automatically."
           color: Color.mOnSurfaceVariant
           pointSize: Style.fontSizeXS
@@ -478,7 +478,7 @@ Item {
 
         NText {
           Layout.fillWidth: true
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.mangowc-format-hint") ||
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.mangowc-format-hint") ||
             "Expected format: bind=SUPER,KEY,action #\"description\"\nCategories: # 1. CATEGORY NAME"
           color: Color.mOnSurfaceVariant
           pointSize: Style.fontSizeXS
@@ -502,7 +502,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.actions") || "Actions"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.actions") || "Actions"
         pointSize: Style.fontSizeL
         font.weight: Style.fontWeightBold
         color: Color.mOnSurface
@@ -512,19 +512,19 @@ Item {
         spacing: Style.marginM
 
         NButton {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.refresh-keybinds") || "Refresh Keybinds"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.refresh-keybinds") || "Refresh Keybinds"
           icon: "refresh"
           onClicked: {
             rootItem.pluginApi?.mainInstance?.refresh();
             ToastService.showNotice(
-              rootItem.pluginApi?.tr("keybind-cheatsheet.settings.refresh-message") ||
+              rootItem.pluginApi?.tr("bind-viewer.settings.refresh-message") ||
               "Refreshing keybinds..."
             );
           }
         }
 
         NButton {
-          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.reset-defaults") || "Reset to Defaults"
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.reset-defaults") || "Reset to Defaults"
           icon: "rotate"
           onClicked: {
             if (rootItem.pluginApi && rootItem.pluginApi.pluginSettings) {
@@ -552,7 +552,7 @@ Item {
               mangowcPathInput.text = defaults.mangowcConfigPath || "~/.config/mango/config.conf";
 
               ToastService.showNotice(
-                rootItem.pluginApi?.tr("keybind-cheatsheet.settings.reset-message") ||
+                rootItem.pluginApi?.tr("bind-viewer.settings.reset-message") ||
                 "Settings have been reset to defaults."
               );
             }
@@ -576,7 +576,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-setup") || "Keybind Setup"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.keybind-setup") || "Keybind Setup"
         pointSize: Style.fontSizeL
         font.weight: Style.fontWeightBold
         color: Color.mOnSurface
@@ -584,7 +584,7 @@ Item {
 
       NText {
     Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-setup-description") ||
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.keybind-setup-description") ||
           "To open the cheatsheet with a keyboard shortcut, add this bind to your compositor config:"
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeS
@@ -601,7 +601,7 @@ Item {
           id: commandText
           anchors.fill: parent
           anchors.margins: Style.marginS
-          text: "qs -c \"noctalia-shell\" ipc call plugin:keybind-cheatsheet toggle"
+          text: "qs -c \"noctalia-shell\" ipc call plugin:bind-viewer toggle"
           font.family: "monospace"
           pointSize: Style.fontSizeS
           color: Color.mPrimary
@@ -611,8 +611,8 @@ Item {
 
       NText {
         Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-hyprland") ||
-          "Hyprland example: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call plugin:keybind-cheatsheet toggle"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.keybind-example-hyprland") ||
+          "Hyprland example: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call plugin:bind-viewer toggle"
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeXS
         wrapMode: Text.WordWrap
@@ -620,8 +620,8 @@ Item {
 
       NText {
         Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-niri") ||
-          "Niri example: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"plugin:keybind-cheatsheet\" \"toggle\"; }"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.keybind-example-niri") ||
+          "Niri example: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"plugin:bind-viewer\" \"toggle\"; }"
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeXS
         wrapMode: Text.WordWrap
@@ -629,8 +629,8 @@ Item {
 
       NText {
         Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-mangowc") ||
-          "MangoWC example: bind=SUPER,F1,exec,qs -c \"noctalia-shell\" ipc call plugin togglePanel keybind-cheatsheet"
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.keybind-example-mangowc") ||
+          "MangoWC example: bind=SUPER,F1,exec,qs -c \"noctalia-shell\" ipc call plugin togglePanel bind-viewer"
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeXS
         wrapMode: Text.WordWrap
@@ -640,7 +640,7 @@ Item {
       NText {
         Layout.fillWidth: true
         Layout.topMargin: Style.marginM
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.additional-commands") ||
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.additional-commands") ||
           "Additional IPC commands:"
         color: Color.mOnSurface
         pointSize: Style.fontSizeS
@@ -649,8 +649,8 @@ Item {
 
       NText {
         Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.command-category") ||
-          "Open with category filter: qs -c \"noctalia-shell\" ipc call \"plugin:keybind-cheatsheet\" \"toggleCategory\" \"Applications\""
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.command-category") ||
+          "Open with category filter: qs -c \"noctalia-shell\" ipc call \"plugin:bind-viewer\" \"toggleCategory\" \"Applications\""
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeXS
         wrapMode: Text.WordWrap
@@ -658,8 +658,8 @@ Item {
 
       NText {
         Layout.fillWidth: true
-        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.command-refresh") ||
-          "Refresh keybinds: qs -c \"noctalia-shell\" ipc call \"plugin:keybind-cheatsheet\" \"refresh\""
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.command-refresh") ||
+          "Refresh keybinds: qs -c \"noctalia-shell\" ipc call \"plugin:bind-viewer\" \"refresh\""
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeXS
         wrapMode: Text.WordWrap
@@ -676,7 +676,7 @@ Item {
     if (!rootItem.pluginApi) return;
     rootItem.pluginApi.saveSettings();
     ToastService.showNotice(
-      rootItem.pluginApi?.tr("keybind-cheatsheet.settings.saved") ||
+      rootItem.pluginApi?.tr("bind-viewer.settings.saved") ||
       "Settings saved successfully."
     );
   }

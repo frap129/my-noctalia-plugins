@@ -2,8 +2,8 @@
   "version": 1,
   "plugins": [
     {
-      "id": "keybind-cheatsheet",
-      "name": "Keybind Cheatsheet",
+      "id": "bind-viewer",
+      "name": "Bind Viewer",
       "version": "3.0.0",
       "official": false,
       "author": "blacku + frap129",

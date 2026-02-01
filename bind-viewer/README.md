@@ -1,4 +1,4 @@
-# Keybind Cheatsheet for Noctalia
+# Bind Viewer for Noctalia
 
 Universal keyboard shortcuts cheatsheet plugin for Noctalia that **automatically detects** your compositor (Hyprland, Niri, or MangoWC) and displays your keybindings with **recursive config parsing**.
 
@@ -27,7 +27,7 @@ Universal keyboard shortcuts cheatsheet plugin for Noctalia that **automatically
 ## Installation
 
 ```bash
-cp -r keybind-cheatsheet ~/.config/noctalia/plugins/
+cp -r bind-viewer ~/.config/noctalia/plugins/
 ```
 
 ## Usage
@@ -40,7 +40,7 @@ Add the plugin to your bar configuration in Noctalia settings. Click the keyboar
 #### Hyprland
 Add to your config:
 ```bash
-bind = $mod, F1, exec, qs -c "noctalia-shell" ipc call "keybind-cheatsheet" "toggle"
+bind = $mod, F1, exec, qs -c "noctalia-shell" ipc call "bind-viewer" "toggle"
 ```
 You can specify your custom Super key variable (e.g., $mainMod) in the plugin settings.
 
@@ -48,14 +48,14 @@ You can specify your custom Super key variable (e.g., $mainMod) in the plugin se
 Add to your config:
 ```kdl
 binds {
-    Mod+F1 { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "keybind-cheatsheet" "toggle"; }
+    Mod+F1 { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "bind-viewer" "toggle"; }
 }
 ```
 
 #### MangoWC
 Add to your config:
 ```bash
-bind=SUPER,F1,exec,qs -c "noctalia-shell" ipc call plugin:keybind-cheatsheet toggle
+bind=SUPER,F1,exec,qs -c "noctalia-shell" ipc call plugin:bind-viewer toggle
 ```
 
 ## Config Format

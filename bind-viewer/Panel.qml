@@ -226,7 +226,7 @@ Item {
     NText {
       id: loadingText
       anchors.centerIn: parent
-      text: pluginApi?.tr("keybind-cheatsheet.panel.loading") || "Loading..."
+      text: pluginApi?.tr("bind-viewer.panel.loading") || "Loading..."
       visible: root.isLoading
       font.pointSize: Style.fontSizeL
       color: Color.mOnSurface
@@ -413,9 +413,9 @@ Item {
             }
           }
 
-          if (switching.length > 0) result.push({ title: pluginApi?.tr("keybind-cheatsheet.panel.workspace-switching") || "WORKSPACES - SWITCHING", binds: switching });
-          if (moving.length > 0) result.push({ title: pluginApi?.tr("keybind-cheatsheet.panel.workspace-moving") || "WORKSPACES - MOVING", binds: moving });
-          if (mouse.length > 0) result.push({ title: pluginApi?.tr("keybind-cheatsheet.panel.workspace-mouse") || "WORKSPACES - MOUSE", binds: mouse });
+          if (switching.length > 0) result.push({ title: pluginApi?.tr("bind-viewer.panel.workspace-switching") || "WORKSPACES - SWITCHING", binds: switching });
+          if (moving.length > 0) result.push({ title: pluginApi?.tr("bind-viewer.panel.workspace-moving") || "WORKSPACES - MOVING", binds: moving });
+          if (mouse.length > 0) result.push({ title: pluginApi?.tr("bind-viewer.panel.workspace-mouse") || "WORKSPACES - MOUSE", binds: mouse });
         } else {
           result.push(cat);
         }

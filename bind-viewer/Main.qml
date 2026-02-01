@@ -1051,7 +1051,7 @@ Item {
   }
 
   IpcHandler {
-    target: "plugin:keybind-cheatsheet"
+    target: "plugin:bind-viewer"
 
     function toggle() {
       if (root.pluginApi) {

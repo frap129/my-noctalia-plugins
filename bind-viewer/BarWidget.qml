@@ -15,7 +15,7 @@ NIconButton {
   baseSize: Style.getCapsuleHeightForScreen(screen?.name)
   applyUiScale: false
   icon: "keyboard"
-  tooltipText: pluginApi?.tr("keybind-cheatsheet.barwidget.tooltip") || "Keybind Cheatsheet"
+  tooltipText: pluginApi?.tr("bind-viewer.barwidget.tooltip") || "Bind Viewer"
   tooltipDirection: BarService.getTooltipDirection(screen?.name)
   customRadius: Style.radiusL
 

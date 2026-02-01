@@ -1,5 +1,5 @@
 {
-  "keybind-cheatsheet": {
+  "bind-viewer": {
     "panel": {
       "loading": "로딩 중...",
       "title": "키맵",
@@ -32,8 +32,8 @@
       "saved": "설정이 성공적으로 저장되었습니다.",
       "keybind-setup": "키바인드 설정",
       "keybind-setup-description": "키보드 단축키로 키바인드 치트시트를 열려면 컴포지터 구성에 이 바인드를 추가하세요:",
-      "keybind-example-hyprland": "Hyprland 예시: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call plugin togglePanel keybind-cheatsheet",
-      "keybind-example-niri": "Niri 예시: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"plugin\" \"togglePanel\" \"keybind-cheatsheet\"; }",
+      "keybind-example-hyprland": "Hyprland 예시: bind = $mod, F1, exec, qs -c \"noctalia-shell\" ipc call plugin togglePanel bind-viewer",
+      "keybind-example-niri": "Niri 예시: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"plugin\" \"togglePanel\" \"bind-viewer\"; }",
       "mod-var": "Mod 키 변수",
       "mod-var-hint": "Super 키에 사용되는 변수 이름 (예: $mod 또는 $mainMod).",
       "width-range": "px (400-3000)",
