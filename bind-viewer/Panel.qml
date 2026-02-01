@@ -107,6 +107,20 @@ Item {
   readonly property string effectivePanelMode: (panelMode === "attached" && !barPositionValid) ? "centered" : panelMode
   readonly property bool attachToBar: effectivePanelMode === "attached"
 
+  // In attached mode, inset the header background horizontally based on bar spaciousness.
+  readonly property string barSpaciousness: Settings.data.bar.spaciousness ?? "default"
+  readonly property int barSpaciousnessUnit: {
+    switch (barSpaciousness) {
+    case "mini": return 4;
+    case "compact": return 6;
+    case "comfortable": return 12;
+    case "spacious": return 16;
+    default: return 8;
+    }
+  }
+  readonly property int padOuter: barSpaciousnessUnit * 2
+  readonly property real headerSideInset: attachToBar ? padOuter : 0
+
   readonly property bool allowAttach: attachToBar
   readonly property bool panelAnchorHorizontalCenter: attachToBar
     ? (barPosition === "top" || barPosition === "bottom")
@@ -175,6 +189,8 @@ Item {
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
+      anchors.leftMargin: root.headerSideInset
+      anchors.rightMargin: root.headerSideInset
       height: 45
       color: Color.mSurfaceVariant
       radius: Style.radiusL
