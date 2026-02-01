@@ -22,14 +22,11 @@ Item {
   property bool autoHeight: cfg.autoHeight ?? defaults.autoHeight ?? true
   property int columnCount: cfg.columnCount ?? defaults.columnCount ?? 3
 
-  property var rawCategories: pluginApi?.pluginSettings?.cheatsheetData || []
-  property var categories: []
-  
+  // Category filtering
+  property string activeCategory: cfg.activeCategory ?? ""
 
-  
-  Component.onCompleted: {
-    categories = processCategories(rawCategories);
-  }
+  property var rawCategories: pluginApi?.pluginSettings?.cheatsheetData || []
+  property var categories: processCategories(filterByActiveCategory(rawCategories))
 
 
   // Dynamic column items (up to 4 columns)
@@ -52,8 +49,14 @@ Item {
   }
 
   onRawCategoriesChanged: {
-    categories = processCategories(rawCategories);
+    categories = processCategories(filterByActiveCategory(rawCategories));
     updateColumnItems();
+  }
+
+  onActiveCategoryChanged: {
+    categories = processCategories(filterByActiveCategory(rawCategories));
+    updateColumnItems();
+    contentPreferredHeight = calculateDynamicHeight();
   }
 
   onCategoriesChanged: {
@@ -179,6 +182,8 @@ Item {
               return "Hyprland Keymap";
             } else if (CompositorService.isNiri) {
               return "Niri Keymap";
+            } else if (CompositorService.isMango) {
+              return "MangoWC Keymap";
             } else {
               return "Keymap";
             }
@@ -186,6 +191,13 @@ Item {
           font.pointSize: Style.fontSizeM
           font.weight: Font.Bold
           color: Color.mPrimary
+        }
+
+        NText {
+          visible: root.activeCategory !== ""
+          text: "(" + root.activeCategory + ")"
+          font.pointSize: Style.fontSizeS
+          color: Color.mSecondary
         }
 
         Item { Layout.fillWidth: true }
@@ -412,6 +424,15 @@ Item {
     }
 
     return cats;
+  }
+
+  function filterByActiveCategory(cats) {
+    if (!activeCategory || activeCategory === "") {
+      return cats;
+    }
+    return cats.filter(function(cat) {
+      return cat.title.toLowerCase().includes(activeCategory.toLowerCase());
+    });
   }
 
   function distributeCategories() {

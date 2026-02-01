@@ -1,13 +1,13 @@
 # Keybind Cheatsheet for Noctalia
 
-Universal keyboard shortcuts cheatsheet plugin for Noctalia that **automatically detects** your compositor (Hyprland or Niri) and displays your keybindings with **recursive config parsing**.
+Universal keyboard shortcuts cheatsheet plugin for Noctalia that **automatically detects** your compositor (Hyprland, Niri, or MangoWC) and displays your keybindings with **recursive config parsing**.
 
 ![Preview](assets/preview.png)
 
 ## Features
 
-- **Automatic compositor detection** (Hyprland or Niri)
-- **Recursive config parsing** - follows all `source` (Hyprland) and `include` (Niri) directives
+- **Automatic compositor detection** (Hyprland, Niri, or MangoWC)
+- **Recursive config parsing** - follows all `source` (Hyprland/MangoWC) and `include` (Niri) directives
 - **Glob pattern support** - parses `~/.config/hypr/*.conf` style includes
 - **Configurable paths** - set custom config file locations in settings
 - **Smart key formatting** - XF86 keys display as readable names (Vol Up, Bright Down, etc.)
@@ -22,6 +22,7 @@ Universal keyboard shortcuts cheatsheet plugin for Noctalia that **automatically
 |------------|----------------|--------|
 | **Hyprland** | `~/.config/hypr/hyprland.conf` | Hyprland config format |
 | **Niri** | `~/.config/niri/config.kdl` | KDL format |
+| **MangoWC** | `~/.config/mango/config.conf` | MangoWC config format |
 
 ## Installation
 
@@ -49,6 +50,12 @@ Add to your config:
 binds {
     Mod+F1 { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "keybind-cheatsheet" "toggle"; }
 }
+```
+
+#### MangoWC
+Add to your config:
+```bash
+bind=SUPER,F1,exec,qs -c "noctalia-shell" ipc call plugin:keybind-cheatsheet toggle
 ```
 
 ## Config Format
@@ -114,6 +121,36 @@ binds {
 include "~/.config/niri/binds.kdl"
 ```
 
+### MangoWC
+
+The plugin recursively parses your main config and all `source` includes.
+
+**Keybind format:**
+```bash
+### Applications ###
+bind=SUPER,T,exec,alacritty #"Terminal"
+bind=SUPER,B,exec,firefox #"Browser"
+
+### Window Management ###
+bind=SUPER,Q,killactive, #"Close window"
+bind=SUPER,F,fullscreen, #"Toggle fullscreen"
+
+### Workspaces ###
+bind=SUPER,1,workspace,1 #"Workspace 1"
+bind=SUPER+SHIFT,1,movetoworkspace,1 #"Move to workspace 1"
+```
+
+**Requirements:**
+- Categories: `### Category Name ###`
+- Descriptions: `#"description"` at end of bind line
+- Modifiers: `SUPER`, `SHIFT`, `CTRL`, `ALT` (joined with `+`)
+
+**Source directives (automatically followed):**
+```bash
+source = ~/.config/mango/keybinds.conf
+source = ~/.config/mango/apps/*.conf
+```
+
 ## Auto-Categorization (Niri)
 
 When no category comment is provided, keybindings are grouped by action:
@@ -154,7 +191,7 @@ Access settings via the gear icon in the panel header:
 - **Window width** - 400-3000px
 - **Height** - Auto or manual (300-2000px)
 - **Columns** - 1-4 columns
-- **Config paths** - Custom paths for Hyprland/Niri configs
+- **Config paths** - Custom paths for Hyprland/Niri/MangoWC configs
 - **Refresh** - Force reload keybindings
 
 ## Troubleshooting
@@ -171,14 +208,16 @@ Access settings via the gear icon in the panel header:
 
 **Niri:** Use `// #"Category Name"` format for custom categories.
 
+**MangoWC:** Categories must use `### Category Name ###` format.
+
 ### Keybinds from included files not showing
 
-The plugin follows `source` (Hyprland) and `include` (Niri) directives automatically. Check logs to see which files are being parsed.
+The plugin follows `source` (Hyprland/MangoWC) and `include` (Niri) directives automatically. Check logs to see which files are being parsed.
 
 ## Requirements
 
 - Noctalia Shell 4.1.0+
-- Hyprland or Niri compositor
+- Hyprland, Niri, or MangoWC compositor
 
 ## License
 

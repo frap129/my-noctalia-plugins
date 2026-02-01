@@ -71,6 +71,7 @@ Item {
   property string modKeyVariable: cfg.modKeyVariable || defaults.modKeyVariable || "$mod"
   property string hyprlandConfigPath: cfg.hyprlandConfigPath || defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf"
   property string niriConfigPath: cfg.niriConfigPath || defaults.niriConfigPath || "~/.config/niri/config.kdl"
+  property string mangowcConfigPath: cfg.mangowcConfigPath || defaults.mangowcConfigPath || "~/.config/mango/config.conf"
 
 
 
@@ -434,6 +435,56 @@ Item {
           wrapMode: Text.WordWrap
         }
       }
+
+      Rectangle {
+        Layout.fillWidth: true
+        Layout.preferredHeight: 1
+        color: Color.mOutline
+        opacity: 0.3
+      }
+
+      // MangoWC path
+      ColumnLayout {
+        spacing: Style.marginXS
+
+        RowLayout {
+          spacing: Style.marginS
+          NIcon {
+            icon: "grid"
+            pointSize: Style.fontSizeM
+            color: Color.mTertiary
+          }
+          NText {
+            text: "MangoWC Path"
+            color: Color.mOnSurface
+            pointSize: Style.fontSizeM
+            font.weight: Style.fontWeightBold
+          }
+        }
+
+        NTextInput {
+          id: mangowcPathInput
+          Layout.fillWidth: true
+          Layout.preferredHeight: Style.baseWidgetSize
+          text: root.mangowcConfigPath
+          placeholderText: "~/.config/mango/config.conf"
+
+          onTextChanged: {
+            if (text.length > 0 && pluginApi && pluginApi.pluginSettings) {
+              rootItem.pluginApi.pluginSettings.mangowcConfigPath = text;
+            }
+          }
+        }
+
+        NText {
+          Layout.fillWidth: true
+          text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.mangowc-format-hint") ||
+            "Expected format: bind=SUPER,KEY,action #\"description\"\nCategories: # 1. CATEGORY NAME"
+          color: Color.mOnSurfaceVariant
+          pointSize: Style.fontSizeXS
+          wrapMode: Text.WordWrap
+        }
+      }
     }
   }
 
@@ -485,6 +536,7 @@ Item {
               rootItem.pluginApi.pluginSettings.modKeyVariable = defaults.modKeyVariable || "$mod";
               rootItem.pluginApi.pluginSettings.hyprlandConfigPath = defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf";
               rootItem.pluginApi.pluginSettings.niriConfigPath = defaults.niriConfigPath || "~/.config/niri/config.kdl";
+              rootItem.pluginApi.pluginSettings.mangowcConfigPath = defaults.mangowcConfigPath || "~/.config/mango/config.conf";
               rootItem.pluginApi.pluginSettings.cheatsheetData = [];
               rootItem.pluginApi.saveSettings();
 
@@ -497,6 +549,7 @@ Item {
               modVarInput.text = defaults.modKeyVariable || "$mod";
               hyprlandPathInput.text = defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf";
               niriPathInput.text = defaults.niriConfigPath || "~/.config/niri/config.kdl";
+              mangowcPathInput.text = defaults.mangowcConfigPath || "~/.config/mango/config.conf";
 
               ToastService.showNotice(
                 rootItem.pluginApi?.tr("keybind-cheatsheet.settings.reset-message") ||
@@ -569,6 +622,44 @@ Item {
         Layout.fillWidth: true
         text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-niri") ||
           "Niri example: Super+F1 { spawn \"qs\" \"-c\" \"noctalia-shell\" \"ipc\" \"call\" \"plugin:keybind-cheatsheet\" \"toggle\"; }"
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeXS
+        wrapMode: Text.WordWrap
+      }
+
+      NText {
+        Layout.fillWidth: true
+        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.keybind-example-mangowc") ||
+          "MangoWC example: bind=SUPER,F1,exec,qs -c \"noctalia-shell\" ipc call plugin togglePanel keybind-cheatsheet"
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeXS
+        wrapMode: Text.WordWrap
+      }
+
+      // Additional IPC commands section
+      NText {
+        Layout.fillWidth: true
+        Layout.topMargin: Style.marginM
+        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.additional-commands") ||
+          "Additional IPC commands:"
+        color: Color.mOnSurface
+        pointSize: Style.fontSizeS
+        font.bold: true
+      }
+
+      NText {
+        Layout.fillWidth: true
+        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.command-category") ||
+          "Open with category filter: qs -c \"noctalia-shell\" ipc call \"plugin:keybind-cheatsheet\" \"toggleCategory\" \"Applications\""
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeXS
+        wrapMode: Text.WordWrap
+      }
+
+      NText {
+        Layout.fillWidth: true
+        text: rootItem.pluginApi?.tr("keybind-cheatsheet.settings.command-refresh") ||
+          "Refresh keybinds: qs -c \"noctalia-shell\" ipc call \"plugin:keybind-cheatsheet\" \"refresh\""
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeXS
         wrapMode: Text.WordWrap

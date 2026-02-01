@@ -61,10 +61,13 @@ Item {
     if (niriReadProcess.running) niriReadProcess.running = false;
     if (hyprGlobProcess.running) hyprGlobProcess.running = false;
     if (hyprReadProcess.running) hyprReadProcess.running = false;
+    if (mangoGlobProcess.running) mangoGlobProcess.running = false;
+    if (mangoReadProcess.running) mangoReadProcess.running = false;
 
     // Clear process buffers
     niriGlobProcess.expandedFiles = [];
     hyprGlobProcess.expandedFiles = [];
+    mangoGlobProcess.expandedFiles = [];
     currentLines = [];
   }
 
@@ -120,12 +123,14 @@ Item {
       logInfo("=== START PARSER for Hyprland ===");
     } else if (CompositorService.isNiri) {
       logInfo("=== START PARSER for Niri ===");
+    } else if (CompositorService.isMango) {
+      logInfo("=== START PARSER for MangoWC ===");
     } else {
-      logError("No supported compositor detected (Hyprland/Niri)");
+      logError("No supported compositor detected (Hyprland/Niri/MangoWC)");
       isCurrentlyParsing = false;
       saveToDb([{
         "title": "Error",
-        "binds": [{ "keys": "ERROR", "desc": "No supported compositor detected (Hyprland/Niri)" }]
+        "binds": [{ "keys": "ERROR", "desc": "No supported compositor detected (Hyprland/Niri/MangoWC)" }]
       }]);
       return;
     }
@@ -154,6 +159,9 @@ Item {
     } else if (CompositorService.isNiri) {
       filePath = pluginApi?.pluginSettings?.niriConfigPath || (homeDir + "/.config/niri/config.kdl");
       filePath = filePath.replace(/^~/, homeDir);
+    } else if (CompositorService.isMango) {
+      filePath = pluginApi?.pluginSettings?.mangowcConfigPath || (homeDir + "/.config/mango/config.conf");
+      filePath = filePath.replace(/^~/, homeDir);
     }
 
     logInfo("Starting with main config: " + filePath);
@@ -161,6 +169,8 @@ Item {
 
     if (CompositorService.isHyprland) {
       parseNextHyprlandFile();
+    } else if (CompositorService.isMango) {
+      parseNextMangoWCFile();
     } else {
       parseNextNiriFile();
     }
@@ -413,6 +423,197 @@ Item {
     clearParsingData();
   }
 
+  // ========== MANGOWC RECURSIVE PARSING ==========
+  function parseNextMangoWCFile() {
+    if (parseDepthCounter >= maxParseDepth) {
+      logError("Max parse depth reached (" + maxParseDepth + "), stopping recursion");
+      isCurrentlyParsing = false;
+      clearParsingData();
+      return;
+    }
+    parseDepthCounter++;
+
+    if (filesToParse.length === 0) {
+      logInfo("All MangoWC files parsed, total lines: " + accumulatedLines.length);
+      if (accumulatedLines.length > 0) {
+        parseMangoWCConfig(accumulatedLines.join("\n"));
+      } else {
+        logWarn("No content found in config files");
+        saveToDb([{
+          "title": "Error",
+          "binds": [{ "keys": "ERROR", "desc": "No keybinds found in MangoWC config" }]
+        }]);
+        isCurrentlyParsing = false;
+        clearParsingData();
+      }
+      return;
+    }
+
+    var nextFile = filesToParse.shift();
+
+    // Handle glob patterns
+    if (isGlobPattern(nextFile)) {
+      mangoGlobProcess.expandedFiles = []; // Clear previous results
+      mangoGlobProcess.command = ["sh", "-c", "for f in " + nextFile + "; do [ -f \"$f\" ] && echo \"$f\"; done"];
+      mangoGlobProcess.running = true;
+      return;
+    }
+
+    if (parsedFiles[nextFile]) {
+      parseNextMangoWCFile();
+      return;
+    }
+
+    parsedFiles[nextFile] = true;
+    logInfo("Parsing MangoWC file: " + nextFile);
+
+    currentLines = [];
+    mangoReadProcess.currentFilePath = nextFile;
+    mangoReadProcess.command = ["cat", nextFile];
+    mangoReadProcess.running = true;
+  }
+
+  Process {
+    id: mangoGlobProcess
+    property var expandedFiles: []
+    running: false
+
+    stdout: SplitParser {
+      onRead: data => {
+        var trimmed = data.trim();
+        if (trimmed.length > 0) {
+          if (mangoGlobProcess.expandedFiles.length < 100) {
+            mangoGlobProcess.expandedFiles.push(trimmed);
+          } else {
+            root.logWarn("Max glob expansion limit reached (100 files)");
+          }
+        }
+      }
+    }
+
+    onExited: {
+      for (var i = 0; i < expandedFiles.length; i++) {
+        var path = expandedFiles[i];
+        if (!root.parsedFiles[path] && root.filesToParse.indexOf(path) === -1) {
+          root.filesToParse.push(path);
+        }
+      }
+      expandedFiles = [];
+      root.parseNextMangoWCFile();
+    }
+  }
+
+  Process {
+    id: mangoReadProcess
+    property string currentFilePath: ""
+    running: false
+
+    stdout: SplitParser {
+      onRead: data => {
+        if (root.currentLines.length < 10000) {
+          root.currentLines.push(data);
+        } else {
+          root.logError("Config file too large (>10000 lines)");
+        }
+      }
+    }
+
+    onExited: (exitCode, exitStatus) => {
+      if (exitCode === 0 && root.currentLines.length > 0) {
+        for (var i = 0; i < root.currentLines.length; i++) {
+          var line = root.currentLines[i];
+          root.accumulatedLines.push(line);
+
+          // Check for source directive (same as Hyprland)
+          var sourceMatch = line.trim().match(/^source\s*=\s*(.+)$/);
+          if (sourceMatch) {
+            var sourcePath = sourceMatch[1].trim();
+            var commentIdx = sourcePath.indexOf('#');
+            if (commentIdx > 0) sourcePath = sourcePath.substring(0, commentIdx).trim();
+            var resolvedPath = root.resolveRelativePath(currentFilePath, sourcePath);
+            logInfo("Found source: " + sourcePath + " -> " + resolvedPath);
+            if (!root.parsedFiles[resolvedPath] && root.filesToParse.indexOf(resolvedPath) === -1) {
+              root.filesToParse.push(resolvedPath);
+            }
+          }
+        }
+      }
+      root.currentLines = [];
+      root.parseNextMangoWCFile();
+    }
+  }
+
+  // ========== MANGOWC PARSER ==========
+  function parseMangoWCConfig(text) {
+    logDebug("Parsing MangoWC config");
+    var lines = text.split('\n');
+    var categories = [];
+    var currentCategory = null;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+
+      // Category header: ### Category Name ###
+      var categoryMatch = line.match(/^###\s*(.+?)\s*###$/);
+      if (categoryMatch) {
+        if (currentCategory) {
+          categories.push(currentCategory);
+        }
+        var title = categoryMatch[1].trim();
+        logDebug("New category: " + title);
+        currentCategory = { "title": title, "binds": [] };
+      }
+      // Keybind: bind=MODIFIERS,KEY,COMMAND,PARAMS #"description"
+      else if (line.startsWith("bind=") && line.includes('#"')) {
+        if (currentCategory) {
+          var descMatch = line.match(/#"(.*?)"$/);
+          var description = descMatch ? descMatch[1] : "No description";
+
+          // Remove the description comment for parsing
+          var bindPart = line.replace(/#".*?"$/, '').trim();
+          var parts = bindPart.split(',');
+          
+          if (parts.length >= 2) {
+            // First part is bind=MODIFIERS
+            var modPart = parts[0].replace('bind=', '').trim().toUpperCase();
+            var rawKey = parts[1].trim().toUpperCase();
+            var key = formatSpecialKey(rawKey);
+
+            // Build modifiers list (MangoWC uses + to join modifiers)
+            var mods = [];
+            if (modPart.includes("SUPER")) mods.push("Super");
+            if (modPart.includes("SHIFT")) mods.push("Shift");
+            if (modPart.includes("CTRL") || modPart.includes("CONTROL")) mods.push("Ctrl");
+            if (modPart.includes("ALT")) mods.push("Alt");
+
+            // Build full key string
+            var fullKey;
+            if (mods.length > 0) {
+              fullKey = mods.join(" + ") + " + " + key;
+            } else {
+              fullKey = key;
+            }
+
+            currentCategory.binds.push({
+              "keys": fullKey,
+              "desc": description
+            });
+            logDebug("Added bind: " + fullKey);
+          }
+        }
+      }
+    }
+
+    if (currentCategory) {
+      categories.push(currentCategory);
+    }
+
+    logDebug("Found " + categories.length + " categories");
+    saveToDb(categories);
+    isCurrentlyParsing = false;
+    clearParsingData();
+  }
+
   // ========== HYPRLAND RECURSIVE PARSING ==========
   function parseNextHyprlandFile() {
     if (parseDepthCounter >= maxParseDepth) {
@@ -542,12 +743,12 @@ Item {
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i].trim();
 
-      // Category header: # 1. Category Name
-      if (line.startsWith("#") && line.match(/#\s*\d+\./)) {
+      // Category header: ### Category Name ###
+      if (line.match(/^###\s*.+\s*###$/)) {
         if (currentCategory) {
           categories.push(currentCategory);
         }
-        var title = line.replace(/#\s*\d+\.\s*/, "").trim();
+        var title = line.replace(/^###\s*/, "").replace(/\s*###$/, "").trim();
         logDebug("New category: " + title);
         currentCategory = { "title": title, "binds": [] };
       }
@@ -840,10 +1041,26 @@ Item {
 
     function toggle() {
       if (root.pluginApi) {
+        // Reset activeCategory so toggle shows all categories
+        root.pluginApi.pluginSettings.activeCategory = "";
+        root.pluginApi.saveSettings();
         root.pluginApi.withCurrentScreen(screen => {
           root.pluginApi.togglePanel(screen);
         });
       }
+    }
+
+    function toggleCategory(category: string) {
+      logInfo("IPC toggleCategory called with: " + category);
+      if (root.pluginApi) {
+        root.pluginApi.pluginSettings.activeCategory = category;
+        root.pluginApi.saveSettings();
+        root.pluginApi.withCurrentScreen(screen => root.pluginApi.togglePanel(screen));
+      }
+    }
+
+    function refresh() {
+      root.refresh();
     }
   }
 }
