@@ -44,7 +44,11 @@
       "width-range": "px (400-3000)",
       "height-range": "px (300-2000)",
       "hyprland-path": "Hyprland Path",
-      "niri-path": "Niri Path"
+      "niri-path": "Niri Path",
+      "panel-mode": "Panel mode",
+      "panel-mode-description": "Choose how the keybinds panel appears.",
+      "panel-mode-attached": "Attached to bar",
+      "panel-mode-centered": "Centered panel"
     },
     "barwidget": {
       "tooltip": "Bind Viewer",

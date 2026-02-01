@@ -67,6 +67,7 @@ Item {
   property int windowHeight: cfg.windowHeight ?? defaults.windowHeight ?? 0
   property bool autoHeight: cfg.autoHeight ?? defaults.autoHeight ?? true
   property int columnCount: cfg.columnCount ?? defaults.columnCount ?? 3
+  property string panelMode: cfg.panelMode ?? defaults.panelMode ?? "attached"
   // NOWA ZMIENNA TUTAJ:
   property string modKeyVariable: cfg.modKeyVariable || defaults.modKeyVariable || "$mod"
   property string hyprlandConfigPath: cfg.hyprlandConfigPath || defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf"
@@ -255,6 +256,47 @@ Item {
         }
       }
 
+      RowLayout {
+        spacing: Style.marginM
+
+        NText {
+          text: rootItem.pluginApi?.tr("bind-viewer.settings.panel-mode") || "Panel mode"
+          color: Color.mOnSurface
+          pointSize: Style.fontSizeM
+        }
+
+        NComboBox {
+          id: panelModeCombo
+          Layout.preferredWidth: 220 * Style.uiScaleRatio
+          Layout.preferredHeight: Style.baseWidgetSize
+          model: [
+            {
+              key: "attached",
+              name: rootItem.pluginApi?.tr("bind-viewer.settings.panel-mode-attached") || "Attached to bar"
+            },
+            {
+              key: "centered",
+              name: rootItem.pluginApi?.tr("bind-viewer.settings.panel-mode-centered") || "Centered panel"
+            }
+          ]
+          currentKey: root.panelMode
+          onSelected: key => {
+            if (rootItem.pluginApi && rootItem.pluginApi.pluginSettings) {
+              rootItem.pluginApi.pluginSettings.panelMode = key;
+            }
+          }
+        }
+      }
+
+      NText {
+        Layout.fillWidth: true
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.panel-mode-description") ||
+          "Choose how the keybinds panel appears."
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeS
+        wrapMode: Text.WordWrap
+      }
+
       NText {
     Layout.fillWidth: true
         text: rootItem.pluginApi?.tr("bind-viewer.settings.columns-hint") ||
@@ -322,7 +364,7 @@ Item {
             placeholderText: "$mod"
 
             onTextChanged: {
-                if (text.length > 0 && pluginApi && pluginApi.pluginSettings) {
+                if (text.length > 0 && rootItem.pluginApi && rootItem.pluginApi.pluginSettings) {
                     rootItem.pluginApi.pluginSettings.modKeyVariable = text;
                 }
             }
@@ -532,6 +574,7 @@ Item {
               rootItem.pluginApi.pluginSettings.windowHeight = defaults.windowHeight || 0;
               rootItem.pluginApi.pluginSettings.autoHeight = defaults.autoHeight ?? true;
               rootItem.pluginApi.pluginSettings.columnCount = defaults.columnCount || 3;
+              rootItem.pluginApi.pluginSettings.panelMode = defaults.panelMode || "attached";
               // RESET DLA NOWEJ ZMIENNEJ:
               rootItem.pluginApi.pluginSettings.modKeyVariable = defaults.modKeyVariable || "$mod";
               rootItem.pluginApi.pluginSettings.hyprlandConfigPath = defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf";
@@ -545,6 +588,7 @@ Item {
               heightInput.text = "850";
               autoHeightToggle.checked = true;
               columnCombo.currentKey = "3";
+              panelModeCombo.currentKey = defaults.panelMode || "attached";
               // AKTUALIZACJA UI DLA NOWEJ ZMIENNEJ:
               modVarInput.text = defaults.modKeyVariable || "$mod";
               hyprlandPathInput.text = defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf";

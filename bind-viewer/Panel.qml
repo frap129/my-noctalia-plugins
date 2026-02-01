@@ -99,9 +99,26 @@ Item {
   property real contentPreferredWidth: settingsWidth
   property real contentPreferredHeight: calculateDynamicHeight()
   readonly property var geometryPlaceholder: panelContainer
-  readonly property bool allowAttach: false
-  readonly property bool panelAnchorHorizontalCenter: true
-  readonly property bool panelAnchorVerticalCenter: true
+
+  // Panel placement: attached-to-bar vs centered
+  readonly property string panelMode: cfg.panelMode ?? defaults.panelMode ?? "attached"
+  readonly property string barPosition: Settings?.data?.bar?.position ?? ""
+  readonly property bool barPositionValid: barPosition === "top" || barPosition === "bottom" || barPosition === "left" || barPosition === "right"
+  readonly property string effectivePanelMode: (panelMode === "attached" && !barPositionValid) ? "centered" : panelMode
+  readonly property bool attachToBar: effectivePanelMode === "attached"
+
+  readonly property bool allowAttach: attachToBar
+  readonly property bool panelAnchorHorizontalCenter: attachToBar
+    ? (barPosition === "top" || barPosition === "bottom")
+    : true
+  readonly property bool panelAnchorVerticalCenter: attachToBar
+    ? (barPosition === "left" || barPosition === "right")
+    : true
+
+  readonly property bool panelAnchorTop: attachToBar && barPosition === "top"
+  readonly property bool panelAnchorBottom: attachToBar && barPosition === "bottom"
+  readonly property bool panelAnchorLeft: attachToBar && barPosition === "left"
+  readonly property bool panelAnchorRight: attachToBar && barPosition === "right"
   anchors.fill: parent
 
   // Data is loaded by Main.qml, we just display it
