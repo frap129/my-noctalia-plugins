@@ -3,7 +3,7 @@
   "name": "Keybind Cheatsheet",
   "version": "3.0.0",
   "minNoctaliaVersion": "3.6.0",
-  "author": "blacku",
+  "author": "blacku + frap129",
   "license": "MIT",
   "description": "Universal keyboard shortcuts keymap that automatically detects and displays keybindings for Hyprland or Niri compositors.",
   "entryPoints": {

@@ -1,11 +1,8 @@
-# Noctalia Main Plugins Registry
-
-Main plugin registry for [Noctalia Shell](https://github.com/noctalia-dev/noctalia-shell).
+# frap129's Noctalia Plugins Registry
 
 ## Overview
 
-This repository hosts community and official plugins for Noctalia Shell.  
-The `registry.json` file is automatically maintained and provides a centralized index of all available plugins.  
+This repository hosts my plugins for Noctalia, including forks and those I dont want to upstream for one reason or another.
 
 ## Plugin Structure
 
@@ -84,6 +81,7 @@ New tags can be added on a case-by-case basis. If your plugin doesn't fit the ex
 1. **Fork this repository**
 
 2. **Create your plugin directory**
+
    ```bash
    mkdir your-plugin-name
    cd your-plugin-name
@@ -110,18 +108,7 @@ See [.github/workflows/README.md](.github/workflows/README.md) for technical det
 
 ## Available Plugins
 
-Check [registry.json](registry.json) or the [plugin overview](https://noctalia.dev/plugins/) on the Noctalia homepage for the complete list of available plugins.
-
-## Custom Repositories
-
-In addition to this main plugin registry, Noctalia Shell supports loading plugins from custom repositories.
-
-This allows the community to share and use plugins outside the main registry.
-
-| Repository        | Link                                                                     |
-|-------------------|--------------------------------------------------------------------------|
-| ThatOneCalculator | [GitHub](https://github.com/ThatOneCalculator/personal-noctalia-plugins) |
-| bennypowers | [GitHub](https://github.com/bennypowers/noctalia-plugins) |
+Check [registry.json](registry.json) for the complete list of available plugins.
 
 ## Development
 
