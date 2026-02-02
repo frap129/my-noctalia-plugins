@@ -1,0 +1,25 @@
+{
+  "id": "which-key",
+  "name": "Which Key",
+  "version": "1.0.0",
+  "minNoctaliaVersion": "3.6.0",
+  "author": "Your Name",
+  "license": "MIT",
+  "description": "Vim-style which-key popup for discovering and executing keybindings",
+  "entryPoints": {
+    "main": "Main.qml",
+    "settings": "Settings.qml"
+  },
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {
+      "timeoutMs": 0,
+      "columns": 3,
+      "showIcons": true,
+      "panelWidth": 600,
+      "panelHeight": 400
+    }
+  }
+}
