@@ -48,7 +48,9 @@
       "panel-mode": "Panel mode",
       "panel-mode-description": "Choose how the keybinds panel appears.",
       "panel-mode-attached": "Attached to bar",
-      "panel-mode-centered": "Centered panel"
+      "panel-mode-centered": "Centered panel",
+      "hide-panel-header": "Hide panel header bar",
+      "hide-panel-header-hint": "Hides the title/refresh/settings bar at the top of the panel."
     },
     "barwidget": {
       "tooltip": "Bind Viewer",

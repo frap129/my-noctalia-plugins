@@ -25,6 +25,10 @@ Item {
   // Category filtering
   property string activeCategory: cfg.activeCategory ?? ""
 
+  // Header visibility setting
+  property bool hidePanelHeader: cfg.hidePanelHeader ?? defaults.hidePanelHeader ?? false
+  readonly property int headerHeight: hidePanelHeader ? 0 : 45
+
   property var rawCategories: pluginApi?.pluginSettings?.cheatsheetData || []
   property var categories: processCategories(filterByActiveCategory(rawCategories))
 
@@ -75,6 +79,10 @@ Item {
   }
 
   onMaxScreenHeightChanged: {
+    contentPreferredHeight = calculateDynamicHeight();
+  }
+
+  onHidePanelHeaderChanged: {
     contentPreferredHeight = calculateDynamicHeight();
   }
 
@@ -170,8 +178,9 @@ Item {
       }
     }
 
-    // header (45) + content + margins (16)
-    var totalHeight = 45 + maxColumnHeight + 16 + 15 + 15;
+    // header + gap (only if header visible) + content + margins
+    var headerGap = hidePanelHeader ? 0 : 16;
+    var totalHeight = headerHeight + headerGap + maxColumnHeight + 15 + 15;
     // Limit to 80% of screen height
     return Math.max(300, Math.min(totalHeight, maxScreenHeight));
   }
@@ -186,12 +195,13 @@ Item {
 
     Rectangle {
       id: header
+      visible: !root.hidePanelHeader
       anchors.top: parent.top
       anchors.left: parent.left
       anchors.right: parent.right
       anchors.leftMargin: root.headerSideInset
       anchors.rightMargin: root.headerSideInset
-      height: 45
+      height: root.headerHeight
       color: Color.mSurfaceVariant
       radius: Style.radiusL
 

@@ -68,6 +68,7 @@ Item {
   property bool autoHeight: cfg.autoHeight ?? defaults.autoHeight ?? true
   property int columnCount: cfg.columnCount ?? defaults.columnCount ?? 3
   property string panelMode: cfg.panelMode ?? defaults.panelMode ?? "attached"
+  property bool hidePanelHeader: cfg.hidePanelHeader ?? defaults.hidePanelHeader ?? false
   // NOWA ZMIENNA TUTAJ:
   property string modKeyVariable: cfg.modKeyVariable || defaults.modKeyVariable || "$mod"
   property string hyprlandConfigPath: cfg.hyprlandConfigPath || defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf"
@@ -292,6 +293,27 @@ Item {
         Layout.fillWidth: true
         text: rootItem.pluginApi?.tr("bind-viewer.settings.panel-mode-description") ||
           "Choose how the keybinds panel appears."
+        color: Color.mOnSurfaceVariant
+        pointSize: Style.fontSizeS
+        wrapMode: Text.WordWrap
+      }
+
+      NToggle {
+        id: hidePanelHeaderToggle
+        label: rootItem.pluginApi?.tr("bind-viewer.settings.hide-panel-header") || "Hide panel header bar"
+        checked: root.hidePanelHeader
+        onToggled: function(checked) {
+          root.hidePanelHeader = checked;
+          if (rootItem.pluginApi && rootItem.pluginApi.pluginSettings) {
+            rootItem.pluginApi.pluginSettings.hidePanelHeader = checked;
+          }
+        }
+      }
+
+      NText {
+        Layout.fillWidth: true
+        text: rootItem.pluginApi?.tr("bind-viewer.settings.hide-panel-header-hint") ||
+          "Hides the title/refresh/settings bar at the top of the panel."
         color: Color.mOnSurfaceVariant
         pointSize: Style.fontSizeS
         wrapMode: Text.WordWrap
@@ -575,6 +597,7 @@ Item {
               rootItem.pluginApi.pluginSettings.autoHeight = defaults.autoHeight ?? true;
               rootItem.pluginApi.pluginSettings.columnCount = defaults.columnCount || 3;
               rootItem.pluginApi.pluginSettings.panelMode = defaults.panelMode || "attached";
+              rootItem.pluginApi.pluginSettings.hidePanelHeader = defaults.hidePanelHeader ?? false;
               // RESET DLA NOWEJ ZMIENNEJ:
               rootItem.pluginApi.pluginSettings.modKeyVariable = defaults.modKeyVariable || "$mod";
               rootItem.pluginApi.pluginSettings.hyprlandConfigPath = defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf";
@@ -589,6 +612,7 @@ Item {
               autoHeightToggle.checked = true;
               columnCombo.currentKey = "3";
               panelModeCombo.currentKey = defaults.panelMode || "attached";
+              hidePanelHeaderToggle.checked = defaults.hidePanelHeader ?? false;
               // AKTUALIZACJA UI DLA NOWEJ ZMIENNEJ:
               modVarInput.text = defaults.modKeyVariable || "$mod";
               hyprlandPathInput.text = defaults.hyprlandConfigPath || "~/.config/hypr/hyprland.conf";

@@ -28,7 +28,8 @@
       "modKeyVariable": "$mod",
       "hyprlandConfigPath": "~/.config/hypr/hyprland.conf",
       "niriConfigPath": "~/.config/niri/config.kdl",
-      "mangowcConfigPath": "~/.config/mango/config.conf"
+      "mangowcConfigPath": "~/.config/mango/config.conf",
+      "hidePanelHeader": false
     }
   }
 }
