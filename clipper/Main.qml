@@ -753,6 +753,7 @@ Item {
     // Process for copying to clipboard (direct pipe: cliphist decode | wl-copy)
     Process {
         id: copyToClipboardProc
+        running: false
         property string clipboardId: ""
         stdout: StdioCollector {}
 
@@ -779,10 +780,11 @@ Item {
             return;
         }
 
-        // Use shell pipe: cliphist decode ID | wl-copy
-        // ID is validated to be numeric only, so this is safe from command injection
+        // cliphist decode expects a line from stdin prefixed with the numeric id (as from `cliphist list`).
+        // Provide a minimal "<id>\t" prefix and pipe decoded content into wl-copy.
+        // ID is validated to be numeric only, so interpolation is safe here.
         copyToClipboardProc.clipboardId = id;
-        copyToClipboardProc.command = ["sh", "-c", `cliphist decode ${id} | wl-copy`];
+        copyToClipboardProc.command = ["sh", "-c", `printf '%s\\t\\n' ${id} | cliphist decode | wl-copy`];
         copyToClipboardProc.running = true;
     }
 

@@ -12,6 +12,55 @@ import qs.Widgets
 Item {
     id: root
 
+    function closePanel() {
+        if (pluginApi) {
+            pluginApi.closePanel(screen);
+        }
+    }
+
+    function moveSelection(delta) {
+        if (listView.count > 0) {
+            selectedIndex = Math.max(0, Math.min(listView.count - 1, selectedIndex + delta));
+            listView.positionViewAtIndex(selectedIndex, ListView.Contain);
+        }
+    }
+
+    function selectFirst() {
+        if (listView.count > 0) {
+            selectedIndex = 0;
+            listView.positionViewAtIndex(selectedIndex, ListView.Beginning);
+        }
+    }
+
+    function selectLast() {
+        if (listView.count > 0) {
+            selectedIndex = listView.count - 1;
+            listView.positionViewAtIndex(selectedIndex, ListView.End);
+        }
+    }
+
+    function activateSelection() {
+        if (listView.count > 0 && selectedIndex >= 0 && selectedIndex < listView.count) {
+            const item = root.filteredItems[selectedIndex];
+            if (item) {
+                pluginApi?.mainInstance?.copyToClipboard(item.id);
+                closePanel();
+            }
+        }
+    }
+
+    function deleteSelection() {
+        if (listView.count > 0 && selectedIndex >= 0 && selectedIndex < listView.count) {
+            const item = root.filteredItems[selectedIndex];
+            if (item) {
+                pluginApi?.mainInstance?.deleteById(item.id);
+                if (selectedIndex >= listView.count - 1) {
+                    selectedIndex = Math.max(0, listView.count - 2);
+                }
+            }
+        }
+    }
+
     // Plugin API (injected by PluginPanelSlot)
     property var pluginApi: null
 
@@ -88,49 +137,15 @@ Item {
         });
     }
 
-    Keys.onLeftPressed: {
-        if (listView.count > 0) {
-            selectedIndex = Math.max(0, selectedIndex - 1);
-            listView.positionViewAtIndex(selectedIndex, ListView.Contain);
-        }
-    }
+    Keys.onLeftPressed: moveSelection(-1)
 
-    Keys.onRightPressed: {
-        if (listView.count > 0) {
-            selectedIndex = Math.min(listView.count - 1, selectedIndex + 1);
-            listView.positionViewAtIndex(selectedIndex, ListView.Contain);
-        }
-    }
+    Keys.onRightPressed: moveSelection(1)
 
-    Keys.onReturnPressed: {
-        if (listView.count > 0 && selectedIndex >= 0 && selectedIndex < listView.count) {
-            const item = root.filteredItems[selectedIndex];
-            if (item) {
-                pluginApi?.mainInstance?.copyToClipboard(item.id);
-                if (pluginApi) {
-                    pluginApi.closePanel(screen);
-                }
-            }
-        }
-    }
+    Keys.onReturnPressed: activateSelection()
 
-    Keys.onEscapePressed: {
-        if (pluginApi) {
-            pluginApi.closePanel(screen);
-        }
-    }
+    Keys.onEscapePressed: closePanel()
 
-    Keys.onDeletePressed: {
-        if (listView.count > 0 && selectedIndex >= 0 && selectedIndex < listView.count) {
-            const item = root.filteredItems[selectedIndex];
-            if (item) {
-                pluginApi?.mainInstance?.deleteById(item.id);
-                if (selectedIndex >= listView.count - 1) {
-                    selectedIndex = Math.max(0, listView.count - 2);
-                }
-            }
-        }
-    }
+    Keys.onDeletePressed: deleteSelection()
 
     Keys.onDigit1Pressed: filterType = "Text"
     Keys.onDigit2Pressed: filterType = "Image"
@@ -228,23 +243,23 @@ Item {
                         if (text !== "") {
                             text = "";
                         } else {
-                            root.onEscapePressed();
+                            root.closePanel();
                         }
                     }
                     Keys.onLeftPressed: event => {
                         if (searchInput.cursorPosition === 0) {
-                            root.onLeftPressed();
+                            root.moveSelection(-1);
                             event.accepted = true;
                         }
                     }
                     Keys.onRightPressed: event => {
                         if (searchInput.cursorPosition === text.length) {
-                            root.onRightPressed();
+                            root.moveSelection(1);
                             event.accepted = true;
                         }
                     }
-                    Keys.onReturnPressed: root.onReturnPressed()
-                    Keys.onEnterPressed: root.onReturnPressed()
+                    Keys.onReturnPressed: root.activateSelection()
+                    Keys.onEnterPressed: root.activateSelection()
                     Keys.onTabPressed: event => {
                         root.filterType = "Text";
                         event.accepted = true;
@@ -260,22 +275,14 @@ Item {
                     }
                     Keys.onPressed: event => {
                         if (event.key === Qt.Key_Home && event.modifiers & Qt.ControlModifier) {
-                            root.onHomePressed();
+                            root.selectFirst();
                             event.accepted = true;
                         } else if (event.key === Qt.Key_End && event.modifiers & Qt.ControlModifier) {
-                            root.onEndPressed();
+                            root.selectLast();
                             event.accepted = true;
                         } else if (event.key === Qt.Key_Delete) {
                             // Delete current card
-                            if (listView.count > 0 && root.selectedIndex >= 0 && root.selectedIndex < listView.count) {
-                                const item = root.filteredItems[root.selectedIndex];
-                                if (item) {
-                                    pluginApi?.mainInstance?.deleteById(item.id);
-                                    if (root.selectedIndex >= listView.count - 1) {
-                                        root.selectedIndex = Math.max(0, listView.count - 2);
-                                    }
-                                }
-                            }
+                            root.deleteSelection();
                             event.accepted = true;
                         } else if (event.key >= Qt.Key_0 && event.key <= Qt.Key_9) {
                             // Number keys for filter types
@@ -427,12 +434,12 @@ Item {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 orientation: ListView.Horizontal
-                spacing: Style.marginM
-                clip: true
-                currentIndex: root.selectedIndex
-                focus: false
+                 spacing: Style.marginM
+                 clip: true
+                 currentIndex: root.selectedIndex
+                 // Allow forceActiveFocus() from the search field.
 
-                model: root.filteredItems
+                 model: root.filteredItems
 
                 Keys.onUpPressed: {
                     searchInput.forceActiveFocus();

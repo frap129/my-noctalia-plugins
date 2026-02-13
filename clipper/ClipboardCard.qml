@@ -285,7 +285,16 @@ Rectangle {
             Layout.fillHeight: true
             Layout.margins: 8
             clip: true
-            MouseArea { id: mouseArea; anchors.fill: parent; hoverEnabled: true; onClicked: root.clicked() }
+            // Click catcher for the whole content area; keep it on top so custom widgets
+            // (NText/NImageRounded) can't swallow clicks.
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                z: 10
+                hoverEnabled: true
+                acceptedButtons: Qt.LeftButton
+                onClicked: root.clicked()
+            }
 
             Rectangle {
                 visible: root.isColor
