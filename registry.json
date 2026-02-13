@@ -32,18 +32,6 @@
         "i18n"
       ],
       "lastUpdated": "2026-02-13T16:57:56-05:00"
-    },
-    {
-      "id": "which-key",
-      "name": "Which Key",
-      "version": "1.0.0",
-      "official": false,
-      "author": "Your Name",
-      "description": "Vim-style which-key popup for discovering and executing keybindings",
-      "minNoctaliaVersion": "3.6.0",
-      "license": "MIT",
-      "tags": [],
-      "lastUpdated": "2026-02-02T08:29:34-05:00"
     }
   ]
 }
