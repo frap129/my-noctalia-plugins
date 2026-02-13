@@ -14,6 +14,26 @@
       "lastUpdated": "2026-02-01T20:42:08-05:00"
     },
     {
+      "id": "clipper",
+      "name": "Clipper",
+      "version": "2.1.1",
+      "official": false,
+      "author": "blackbartblues",
+      "description": "Advanced clipboard manager with history, search, keyboard navigation, ToDo integration, pinned items, notecards/sticky notes, and selection-to-notecard feature. Fully translated with comprehensive i18n support.",
+      "repository": "https://github.com/blackbartblues/noctalia-clipper",
+      "minNoctaliaVersion": "4.1.2",
+      "license": "MIT",
+      "tags": [
+        "Clipboard",
+        "Utility",
+        "Bar",
+        "Panel",
+        "Notes",
+        "i18n"
+      ],
+      "lastUpdated": "2026-02-13T16:57:56-05:00"
+    },
+    {
       "id": "which-key",
       "name": "Which Key",
       "version": "1.0.0",
